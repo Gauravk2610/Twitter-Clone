@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{object}}
+{% endblock title %}
+
+{% block style %}
+<style>
+svg:hover{
+    background-color: #e6ecf0;
+}
+.mid_head{
+    font-size: larger;
+    font-weight: bolder;
+}
+button:focus{
+   outline:none;
+}
+.follow{
+    /* margin-top: 270px; */
+    margin-right: 20px;
+    width: 100px;
+    height: 40px;
+    float: right;
+    color: #007bff; 
+    background-color: transparent;
+    font-size: large;
+    font-weight: bolder;
+    border-color: #007bff;
+    display: block;
+    border-radius: 50px;
+}
+.edit_profile{
+    margin-right: 20px;
+    width: 150px;
+    height: 40px;
+    float: right;
+    color: #007bff; 
+    background-color: transparent;
+    font-size: large;
+    font-weight: bolder;
+    border-color: #007bff;
+    display: block;
+    border-radius: 50px;
+}
+.edit_profile:hover{
+    outline: none;
+    background-color: #cce8fa;
+}
+.following{
+    /* margin-top: 270px; */
+    margin-right: 20px;
+    width: 100px;
+    height: 40px;
+    float: right;
+    color: white; 
+    background-color: #007bff;
+    font-size: large;
+    font-weight: bolder;
+    border-color: #007bff;
+    display: block;
+    border-radius: 50px;
+}
+.following:hover{
+    background-color: red;
+    border-color: red;
+}
+.following:hover span {display:none}
+.following:hover:before{content:"Unfollow"}
+.follow:hover{
+    outline: none;
+    background-color: #cce8fa;
+}
+.profile_name .name{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+.profile_name .user_name{
+    text-align: center;
+    color: #657786;
+    font-weight: lighter;
+    font-size: medium;
+}
+.profile_name .description{
+    font-size: large;
+}
+</style>
+
+{% endblock style %}
+
+{% block head %}
+<a>
+<svg onclick="goBack()" style="float:left" viewBox="0 0 24 24" class="r-13gxpu9 r-4qtqp9 r-yyyyoo r-1q142lx r-50lct3 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-1srniue"><g><path d="M20 11H7.414l4.293-4.293c.39-.39.39-1.023 0-1.414s-1.023-.39-1.414 0l-6 6c-.39.39-.39 1.023 0 1.414l6 6c.195.195.45.293.707.293s.512-.098.707-.293c.39-.39.39-1.023 0-1.414L7.414 13H20c.553 0 1-.447 1-1s-.447-1-1-1z"></path></g></svg>
+</a>
+<span class="mx-4 top_head">{{object.user}}</span>
+{% endblock head %}
+
+{% block gap %}
+{% endblock gap %}
+
+{% block main_post %}
+{% endblock main_post %}
+
+        {% block mid_body %}
+        <div class="profile_user_post">
+            <div class="row profile_name">
+                <div class="bgd" style="background-color: gray; height:250px; width: 100%;">
+                    {% if object.profile_image %}
+                    <img src="/media/{{object.profile_image}}" alt="Avatar" style="height: 180px; border: 5px solid white; margin-left: 20px; margin-top: 150px; width: 180px; border-radius: 50%;">
+                    {% else %}
+                    <img src="{% static 'img/prof.jpg' %}" alt="Avatar" style="height: 180px; border: 5px solid white; margin-left: 20px; margin-top: 150px; width: 180px; border-radius: 50%;">
+                    {% endif %}
+                    {% if object.user == prof_user.user %}
+                    <button class="edit_profile " style="margin-top: 300px;" type="submit"><span>Edit profile</span></button>
+                    {% else %}
+                    <form action="{% url 'profiles:follow-unfollow-profile' %}" method="POST">
+                        {% csrf_token %}
+                    <input type="hidden" name="profile_pk" value={{object.pk}}>
+                        {% if object.user in prof_user.following.all %}
+                            <button class="following " type="submit"><span>Following</span></button>
+
+                        {% else %}
+                            <button class="follow " type="submit">Follow</button>
+                            
+                        {% endif %}
+                    {% endif %}
+                    </form>
+                    <div class="col">
+                        <span class="name">{{object.user.get_full_name}}</span>
+                        <br>
+                        <span class="user_name" style="text-transform: lowercase;">@{{object.user}} {{object.created}}</span>
+                        <br>
+                    </div>
+                    
+                    <div class="col-4 description my-3" >
+
+                        {{object.bio|linebreaks}}
+                    </div>
+                    <div class="profile_following mx-3">
+                    <strong style="font-size: medium;">{{object.following.all.count}}</strong>
+                    <span style="color:#657786;">Following</span>
+                    <span class="mx-4">Joined<svg viewBox="0 0 24 24" style="height: 30px; width: 30px;" class="r-1re7ezh r-4qtqp9 r-yyyyoo r-1xvli5t r-7o8qx1 r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"><g><path d="M19.708 2H4.292C3.028 2 2 3.028 2 4.292v15.416C2 20.972 3.028 22 4.292 22h15.416C20.972 22 22 20.972 22 19.708V4.292C22 3.028 20.972 2 19.708 2zm.792 17.708c0 .437-.355.792-.792.792H4.292c-.437 0-.792-.355-.792-.792V6.418c0-.437.354-.79.79-.792h15.42c.436 0 .79.355.79.79V19.71z"></path><circle cx="7.032" cy="8.75" r="1.285"></circle><circle cx="7.032" cy="13.156" r="1.285"></circle><circle cx="16.968" cy="8.75" r="1.285"></circle><circle cx="16.968" cy="13.156" r="1.285"></circle><circle cx="12" cy="8.75" r="1.285"></circle><circle cx="12" cy="13.156" r="1.285"></circle><circle cx="7.032" cy="17.486" r="1.285"></circle><circle cx="12" cy="17.486" r="1.285"></circle></g></svg>
+                    {{object.created}}
+                    </span>
+                    </div>
+                    <hr>
+
+                    <div class="image" style="text-align: center;">  
+                    <span  style="text-align: center; font-size: larger;  font-weight: bold; color: #007bff;">Tweets</span>
+                    <hr>  
+                    </div>
+
+                        <div class="follow_user_post mx-4">
+                        {% for post in object.profile_posts %}
+                            <div class="row profile_name">
+                                <img src="/media/{{object.profile_image}}" alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+                                <div class="col ">
+                                <span class="follow_user">{{object.user.get_full_name}} </span>
+                                <span class="user_pub" style="text-transform: lowercase;">@{{post.author.user}} . Nov 5</span>
+                                <br>
+                                <div class="row description mx-4">
+                                    {{post.body}}
+                                </div>
+                                <div class="hastags mx-4 my-4">
+                                    {{post.hastag}}
+                                </div>
+                                <div class="image">
+                                    <img src="/media/{{post.post_image}}" width="500px" height=auto>
+                                    
+                                </div>
+                            </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                        <hr>
+
+                </div> 
+            </div>
+        </div>
+        <!-- <hr> -->
+        {% endblock mid_body %}
