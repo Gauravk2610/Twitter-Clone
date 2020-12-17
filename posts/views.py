@@ -28,11 +28,19 @@ def post_save(request):
     if request.method == 'POST':
         pk = request.POST.get("profile_pk")
         body = request.POST.get('text1')
-        img_file = request.FILES['imgInp']
         img = request.POST.get('imgInp') 
         profile = Profile.objects.get(user=request.user)
-        post = Post(author=profile, body=body, post_image=img_file)
-        post.save()
+        try:
+            img_file = request.FILES['imgInp']
+            post = Post(author=profile, body=body, post_image=img_file)
+            post.save()
+        except Exception:
+            pass
+        if body:
+            post = Post(author=profile, body=body)
+            post.save()
+        else:
+            pass
         print(pk, body, img)
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -71,3 +79,29 @@ class tweet_detail(DetailView):
         print(pk)
         post = Post.objects.get(pk=pk)
         return post
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        profile =  Profile.objects.get(user=user)
+        context["prof_user"] = profile
+        pk = self.kwargs.get('pk')
+        print(pk)
+        post = Post.objects.get(pk=pk)
+        print(post.comments)
+        liss = []
+        # post = post.comment_set.all()
+        comment = post.comment_set.all()
+        context["comments"] = comment
+        # for comments in post.comment_set.all():
+        #     print(comments)
+        #     liss.append(comments)
+        # print(liss)
+        # # liss = post.comment_set.all()
+        # print(len(liss))
+        # if len(liss) > 0:
+        #     qs = sorted(chain(*liss), reverse=True, key=lambda obj:obj.created)
+        #     print(qs)
+        # comments = [comment for comment in post.comments.all]
+        # print(comments)
+        return context
