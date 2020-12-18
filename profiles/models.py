@@ -9,6 +9,7 @@ class Profile(models.Model):
     profile_image = models.ImageField(upload_to="profile/images", blank=True)
     following = models.ManyToManyField(User, related_name='following', blank=True)
     bio = models.TextField(default="No Bio...")
+    notification = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now=True)
 

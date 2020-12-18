@@ -50,8 +50,16 @@ def like_posts(request, pk):
 
     if user in post.liked.all():
         post.liked.remove(user)
+        post_user = post.author.user
+        notify = Profile.objects.get(user=post_user)
+        notify.notification = False
+        notify.save()
     else:
         post.liked.add(user)
+        post_user = post.author.user
+        notify = Profile.objects.get(user=post_user)
+        notify.notification = True
+        notify.save()
     # return redirect('posts:post-like')
     return redirect(request.META.get('HTTP_REFERER'))
 
