@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from profiles.models import Profile
 from django.views.generic import DetailView
 from posts.models import Post, Comment
+from notify.models import Notify
 from itertools import chain
 
 # Create your views here.
@@ -60,6 +61,10 @@ def like_posts(request, pk):
         notify = Profile.objects.get(user=post_user)
         notify.notification = True
         notify.save()
+        liker = Profile.objects.get(user=user)
+        content = "{} liked your Post {}".format(liker, post)
+        notification = Notify(user=notify, post=post, content=content)
+        notification.save()
     # return redirect('posts:post-like')
     return redirect(request.META.get('HTTP_REFERER'))
 

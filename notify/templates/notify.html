@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+{% endblock head %}
+
+{% block title %}
+Notifications
+{% endblock title %}
+
+{% block main_post %}Notifications{% endblock main_post %}
+
+{% block mid_body %} 
+
+{% for notify in notification %}
+<p>
+{{notify.content}}
+</p>
+{% endfor %}
+
+{% endblock mid_body %}

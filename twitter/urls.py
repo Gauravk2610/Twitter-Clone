@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('profiles/', include('profiles.urls', namespace='profile')),
     path('home/', include('posts.urls', namespace='posts')),
+    path('notification/', include('notify.urls', namespace='notify')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
