@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from .models import Profile
+from django.contrib.auth.models import User
+
 # Create your views here.
 
 class ProfileListView(ListView):
@@ -50,6 +52,36 @@ class ProfileDetailView(DetailView):
         profile =  Profile.objects.get(user=user)
         context["prof_user"] = profile
         return context
+
+def profile_save(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        bio = request.POST.get('bio')
+        img = request.POST.get('imgInp') 
+        user = User.objects.get(username=request.user)
+        profile = Profile.objects.get(user=request.user)
+        print(name, bio, img)
+
+        try:
+            img_file = request.FILES['imgInp']
+            profile.profile_image = img_file
+            # profile.save()
+        except Exception:
+            pass
+        if name:
+            user.username = name
+            user.save()
+        if bio:
+            # profile = Profile.objects.get(user=request.user)
+            profile.bio = bio
+        else:
+            pass
+        profile.save()
+        print(name, bio, img)
+    return redirect(request.META.get('HTTP_REFERER'))
+    
+
+
 
 '''def index(request):
     prof_list = []

@@ -205,6 +205,55 @@ textarea {
 {% endblock main_post %}
 
         {% block mid_body %}
+
+<!-- Modal -->
+<form  method="POST"  action="{% url 'profiles:profile-save' %}">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title" id="exampleModalLongTitle" style="margin-left: 20px; margin-right: 220px;">Edit Profile</h5>
+        <button type="submit" class="btn btn-primary" style="border-radius: 50px; width: 80px;" >Save</button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+        <div class="profile_user_post">
+            <div class="row profile_name">
+                    {% csrf_token %}
+                    <div class="bgd" style="background-color: gray; height:200px; width: 100%;">
+                    {% if object.profile_image %}
+                    <span class="btn btn-default btn-file">
+                    <input type="file" id="imgInp">
+                    <img src="/media/{{object.profile_image}}" alt="Avatar" style="height: 100px; border: 5px solid white; margin-left: 20px; margin-top: 150px; width: 100px; border-radius: 50%;">
+                    </span>
+                    {% else %}
+                    <img src="{% static 'img/prof.jpg' %}" alt="Avatar" style="height: 100px; border: 5px solid white; margin-left: 20px; margin-top: 150px; width: 100px; border-radius: 50%;">
+                    {% endif %}
+
+                </div>
+                    <div class="form-group " style="width: 400px; margin-top: 50px;">
+                      <label for="recipient-name" class="col-form-label">username</label>
+                      <input type="text" class="form-control" id="name" name="name">
+                    </div>
+                    <div class="form-group" style="width: 400px;">
+                      <label for="message-text" class="col-form-label">Bio</label>
+                      <textarea class="form-control" id="bio" name="bio"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div> -->
+</div>
+</div>
+</div>
+</form>
+
         <div class="profile_user_post">
             <div class="row profile_name">
                 <div class="bgd" style="background-color: gray; height:250px; width: 100%;">
@@ -214,7 +263,7 @@ textarea {
                     <img src="{% static 'img/prof.jpg' %}" alt="Avatar" style="height: 180px; border: 5px solid white; margin-left: 20px; margin-top: 150px; width: 180px; border-radius: 50%;">
                     {% endif %}
                     {% if object.user == prof_user.user %}
-                    <button class="edit_profile " style="margin-top: 300px;" type="submit"><span>Edit profile</span></button>
+                    <button class="edit_profile " style="margin-top: 300px;" type="submit" data-toggle="modal" data-target="#exampleModalCenter" ><span>Edit profile</span></button>
                     {% else %}
                     <form action="{% url 'profiles:follow-unfollow-profile' %}" method="POST">
                         {% csrf_token %}
