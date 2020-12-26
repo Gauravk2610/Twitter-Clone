@@ -198,8 +198,10 @@ field.style.height = height + 'px';
                                 <span class="hastag">
                                 {{post.hastag}}
                             </span>
+                            {% if post.post_image == "False" %}
+                            {% else %}
                             <img src='/media/{{post.post_image}}' style="border-radius: 20px;" width="400px">
-                            
+                            {% endif %}
                                 
                             </div>
                         </div>

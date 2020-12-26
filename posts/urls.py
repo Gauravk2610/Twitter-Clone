@@ -8,5 +8,5 @@ urlpatterns = [
     path('post_save', post_save, name='post-save'),
     path('like/<pk>', like_posts, name='like-post'),
     path('comment', comment_save, name='comment-save'),
-    path('<pk>', tweet_detail.as_view(), name='tweet-detail'),
+    path('<pk>/', tweet_detail.as_view(), name='tweet-detail'),
 ]

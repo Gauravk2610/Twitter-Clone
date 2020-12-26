@@ -55,6 +55,8 @@ def like_posts(request, pk):
         notify = Profile.objects.get(user=post_user)
         notify.notification = False
         notify.save()
+        notify = Notify.objects.get(user=notify, post=post)
+        notify.delete()
     else:
         post.liked.add(user)
         post_user = post.author.user
@@ -62,7 +64,7 @@ def like_posts(request, pk):
         notify.notification = True
         notify.save()
         liker = Profile.objects.get(user=user)
-        content = "{} liked your Post {}".format(liker, post)
+        content = "{} liked your Post ".format(liker)
         notification = Notify(user=notify, post=post, content=content)
         notification.save()
     # return redirect('posts:post-like')

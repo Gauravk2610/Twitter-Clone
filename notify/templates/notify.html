@@ -2,21 +2,32 @@
 
 {% load static %}
 
-{% block head %}
-{% endblock head %}
+
 
 {% block title %}
 Notifications
 {% endblock title %}
 
-{% block main_post %}Notifications{% endblock main_post %}
+{% block head %}Notifications{% endblock head %}
+
+{% block main_post %}
+{% endblock main_post %}
 
 {% block mid_body %} 
 
 {% for notify in notification %}
-<p>
+<div class="row mx-2">
+<a href={% url 'profiles:profile-detail-view' notify.user.pk%}>
+<img src='/media/{{notify.user.profile_image}}' alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;"></a>
+</a>
+<p class="mx-4">
 {{notify.content}}
+<a href= '/home/{{notify.post.pk}}'>
+{{notify.post}}
+</a>
 </p>
+</div>
+<hr>
 {% endfor %}
 
 {% endblock mid_body %}
