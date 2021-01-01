@@ -12,13 +12,15 @@ class ProfileListView(ListView):
 
     def get_queryset(self):
         return Profile.objects.all().exclude(user=self.request.user)
-    
+        
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
         user = self.request.user
         profile =  Profile.objects.get(user=user)
         context["prof_user"] = profile
         return context
+    
 
 
 def follow_unfollow_profile(request):
@@ -47,18 +49,22 @@ class ProfileDetailView(DetailView):
     template_name = 'profile.html'
     
     def get_object(self, **kwargs):
+
         pk = self.kwargs.get('pk')
         view_profile = Profile.objects.get(pk=pk)
         return view_profile
         # return super().get_object()
 
+
+    
     def get_context_data(self, **kwargs):
+    
         context = super().get_context_data(**kwargs)
         user = self.request.user
         profile =  Profile.objects.get(user=user)
         context["prof_user"] = profile
         return context
-        
+
 
 
 def profile_save(request):
