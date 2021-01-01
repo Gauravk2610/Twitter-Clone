@@ -101,42 +101,38 @@ def comment_save(request):
         return redirect("/")
         
 class tweet_detail(DetailView):
-    if request.user.is_authenticated is True:
-        model = Post
-        template_name = 'tweet_detail.html'
-        context_object_name = 'post'
+    model = Post
+    template_name = 'tweet_detail.html'
+    context_object_name = 'post'
 
-        def get_object(self, **kwargs):
-            pk = self.kwargs.get('pk')
-            print(pk)
-            post = Post.objects.get(pk=pk)
-            return post
-        
-        def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            user = self.request.user
-            profile =  Profile.objects.get(user=user)
-            context["prof_user"] = profile
-            pk = self.kwargs.get('pk')
-            print(pk)
-            post = Post.objects.get(pk=pk)
-            print(post.comments)
-            liss = []
-            # post = post.comment_set.all()
-            comment = post.comment_set.all()
-            context["comments"] = comment
-            # for comments in post.comment_set.all():
-            #     print(comments)
-            #     liss.append(comments)
-            # print(liss)
-            # # liss = post.comment_set.all()
-            # print(len(liss))
-            # if len(liss) > 0:
-            #     qs = sorted(chain(*liss), reverse=True, key=lambda obj:obj.created)
-            #     print(qs)
-            # comments = [comment for comment in post.comments.all]
-            # print(comments)
-            return context
-
-    else:
-        return redirect("/")
+    def get_object(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        print(pk)
+        post = Post.objects.get(pk=pk)
+        return post
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        profile =  Profile.objects.get(user=user)
+        context["prof_user"] = profile
+        pk = self.kwargs.get('pk')
+        print(pk)
+        post = Post.objects.get(pk=pk)
+        print(post.comments)
+        liss = []
+        # post = post.comment_set.all()
+        comment = post.comment_set.all()
+        context["comments"] = comment
+        # for comments in post.comment_set.all():
+        #     print(comments)
+        #     liss.append(comments)
+        # print(liss)
+        # # liss = post.comment_set.all()
+        # print(len(liss))
+        # if len(liss) > 0:
+        #     qs = sorted(chain(*liss), reverse=True, key=lambda obj:obj.created)
+        #     print(qs)
+        # comments = [comment for comment in post.comments.all]
+        # print(comments)
+        return context

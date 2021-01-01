@@ -6,23 +6,20 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 class ProfileListView(ListView):
-    if request.user.is_authenticated is True:
-        model = Profile
-        template_name = "connect.html"
-        context_object_name = 'profiles'
+    model = Profile
+    template_name = "connect.html"
+    context_object_name = 'profiles'
 
-        def get_queryset(self):
-            return Profile.objects.all().exclude(user=self.request.user)
-        
-        def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            user = self.request.user
-            profile =  Profile.objects.get(user=user)
-            context["prof_user"] = profile
-            return context
+    def get_queryset(self):
+        return Profile.objects.all().exclude(user=self.request.user)
     
-    else:
-        return redirect("/")
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        profile =  Profile.objects.get(user=user)
+        context["prof_user"] = profile
+        return context
+
 
 def follow_unfollow_profile(request):
     if request.user.is_authenticated is True:
@@ -45,26 +42,24 @@ def follow_unfollow_profile(request):
         return redirect("/")
 
 class ProfileDetailView(DetailView):
-    if request.user.is_authenticated is True:
-        model = Profile
-        template_name = 'profile.html'
+
+    model = Profile
+    template_name = 'profile.html'
+    
+    def get_object(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        view_profile = Profile.objects.get(pk=pk)
+        return view_profile
+        # return super().get_object()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        profile =  Profile.objects.get(user=user)
+        context["prof_user"] = profile
+        return context
         
-        def get_object(self, **kwargs):
-            pk = self.kwargs.get('pk')
-            view_profile = Profile.objects.get(pk=pk)
-            return view_profile
-            # return super().get_object()
 
-        def get_context_data(self, **kwargs):
-            context = super().get_context_data(**kwargs)
-            user = self.request.user
-            profile =  Profile.objects.get(user=user)
-            context["prof_user"] = profile
-            return context
-
-    else:
-
-        return redirect("/")
 
 def profile_save(request):
     if request.user.is_authenticated is True:
@@ -97,14 +92,3 @@ def profile_save(request):
     else:
         return redirect("/")
         
-
-
-
-'''def index(request):
-    prof_list = []
-    profiles = Profile.objects.all().exclude(user=request.user)
-    view_profile = request.user
-    for profile in profiles:
-        if view_profile in profiles.following.all():
-            prof_list.append
-'''
