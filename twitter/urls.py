@@ -23,4 +23,5 @@ urlpatterns = [
     path('profiles/', include('profiles.urls', namespace='profile')),
     path('home/', include('posts.urls', namespace='posts')),
     path('notification/', include('notify.urls', namespace='notify')),
+    path('', include('authentication.urls', namespace='authentication')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
