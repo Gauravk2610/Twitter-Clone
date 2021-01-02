@@ -18,7 +18,11 @@ Notifications
 {% for notify in notification %}
 <div class="row mx-2">
 <a href={% url 'profiles:profile-detail-view' notify.user.pk%}>
+{% if notify.user.profile_image %}
 <img src='/media/{{notify.user.profile_image}}' alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;"></a>
+{% else %}
+<img src="{% static 'img/prof.jpg' %}"  alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+{% endif %}
 </a>
 <p class="mx-4">
 {{notify.content}}

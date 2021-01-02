@@ -183,7 +183,13 @@ field.style.height = height + 'px';
                     <div class="modal-body">
                         <div class="row mx-2">
                             <input type="hidden" name='post_pk' value={{post.pk}}>
-                        <a href={% url 'profiles:profile-detail-view' profile.pk%}><img src='/media/{{profile.profile_image}}'  alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;"></a>
+                        <a href={% url 'profiles:profile-detail-view' profile.pk%}>
+                        {% if profile.profile_image %}
+                        <img src='/media/{{profile.profile_image}}'  alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+                        {% else %}
+                        <img src="{% static 'img/prof.jpg' %}"  alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+                        {% endif %}
+                        </a>
                         <textarea style="outline: none; border: none; font-size: larger;" name="content" class=" mx-2" name="text1" placeholder="Add a comment"></textarea> 
                         </div>
                         <div class="col col-8" style="margin-left: 100px; border-radius: 20px; border-color: black;">
@@ -227,7 +233,13 @@ field.style.height = height + 'px';
         
         <div class="follow_user_post">
             <div class="row profile_name">
-                <a href={% url 'profiles:profile-detail-view' post.author.pk%}><img src='/media/{{post.author.profile_image}}' alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;"></a>
+                <a href={% url 'profiles:profile-detail-view' post.author.pk%}>
+                {% if post.author.profile_image %}
+                <img src='/media/{{post.author.profile_image}}' alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+                {% else %}
+                <img src="{% static 'img/prof.jpg' %}"  alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+                {% endif %}
+                </a>
                 <div class="col ">
                 <a href={% url 'profiles:profile-detail-view' post.author.pk%}>
                     <span class="follow_user">{{post.author.user.get_full_name}}</span>

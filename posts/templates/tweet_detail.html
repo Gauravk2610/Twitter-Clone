@@ -178,7 +178,13 @@ textarea {
 </div>
         <div class="follow_user_post">
             <div class="row profile_name">
-                <a href={% url 'profiles:profile-detail-view' post.author.pk%}><img src='/media/{{post.author.profile_image}}' alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;"></a>
+                <a href={% url 'profiles:profile-detail-view' post.author.pk%}>
+                {% if post.author.profile_image %}
+                <img src='/media/{{post.author.profile_image}}' alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+                {% else %}
+                <img src="{% static 'img/prof.jpg' %}"  alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+                {% endif %}
+                </a>
                 <div class="col ">
                 <a href={% url 'profiles:profile-detail-view' post.author.pk%}>
                     <span class="follow_user">{{post.author.user.get_full_name}}</span>
@@ -239,7 +245,12 @@ textarea {
     <div class="col">
     <div class="row ">  
         <a href={% url 'profiles:profile-detail-view' comment.user.pk%}>
-            <img src='/media/{{comment.user.profile_image}}' alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;"></a>
+        {% if comment.user.profile_image %}
+            <img src='/media/{{comment.user.profile_image}}' alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+        {% else %}
+            <img src="{% static 'img/prof.jpg' %}"  alt="Avatar" style="height: 50px; width: 50px; border-radius: 50%;">
+        {% endif %}
+            </a>
         <div class="col ">
         <a href={% url 'profiles:profile-detail-view' comment.user.pk%}>
             <span class="comment_user">{{comment.user.user.get_full_name}}</span>

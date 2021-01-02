@@ -41,12 +41,11 @@ def post_save(request):
                 post = Post(author=profile, body=body, post_image=img_file)
                 post.save()
             except Exception:
-                pass
-            if body:
-                post = Post(author=profile, body=body)
-                post.save()
-            else:
-                pass
+                if body:
+                    post = Post(author=profile, body=body)
+                    post.save()
+                else:
+                    pass
             print(pk, body, img)
         return redirect(request.META.get('HTTP_REFERER'))\
 

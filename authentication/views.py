@@ -46,7 +46,7 @@ def signup(request):
         myuser.last_name = lname
         myuser.save()
         user = authenticate(username=username, password=pass1)
-        loginn(user)
+        loginn(request, user)
         return redirect('/home')
     else:
         return HttpResponse("404 Not Found")
